@@ -105,11 +105,19 @@ export default function CotizadorAndres() {
     const pesoVolumetrico = alto && largo && ancho ? +((alto * largo * ancho) / 5000).toFixed(3) : 0;
     const pesoFacturable = Math.max(pesoFisico, pesoVolumetrico);
 
-    const precioProducto = Number(result.precio_usd || 0);
-    const costoEnvio = +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
-    const feeBateria = result.incluye_bateria ? BATTERY_FEE : 0;
-    const totalUSD = +(precioProducto + costoEnvio + feeBateria).toFixed(2);
+   const precioProducto = Number(result.precio_usd || 0);
+const comisionCompra = +(precioProducto * 0.07).toFixed(2);
 
+const costoEnvio = +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
+
+const feeBateria = result.incluye_bateria ? BATTERY_FEE : 0;
+
+const totalUSD = +(
+  precioProducto +
+  comisionCompra +
+  costoEnvio +
+  feeBateria
+).toFixed(2);
     return {
       pesoProducto,
       pesoCajaFab,

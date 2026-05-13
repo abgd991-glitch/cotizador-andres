@@ -126,6 +126,7 @@ const totalUSD = +(
       pesoVolumetrico,
       pesoFacturable,
       precioProducto,
+      comisionCompra,
       costoEnvio,
       feeBateria,
       totalUSD,
@@ -235,6 +236,7 @@ const totalUSD = +(
           <h3>💵 Desglose de costos</h3>
           <div className="quote-box">
             <Row label="Precio del producto" value={`$${quote.precioProducto.toFixed(2)}`} />
+            <Row label="Impuesto 7%" value={`$${quote.comisionCompra.toFixed(2)}`} />
             <Row label={`Flete (${quote.pesoFacturable} kg × $45/kg)`} value={`$${quote.costoEnvio.toFixed(2)}`} />
             {quote.feeBateria > 0 && <Row label="Fee por batería" value={`$${quote.feeBateria.toFixed(2)}`} />}
             <div className="total-row">

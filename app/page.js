@@ -6,7 +6,7 @@ import "./style.css";
 const SHIPPING_RATE_PER_KG = 45;
 const MASTER_BOX_KG = 0.12;
 const BATTERY_FEE = 10;
-const WHATSAPP_URL = process.env.NEXT_PUBLIC_WHATSAPP_URL || "https://wa.me/message/MRKPA63RPESTI1";
+const WHATSAPP_URL = "https://wa.me/59177829816";
 
 const categoryEmoji = {
   "Electrónico": "💻",
@@ -31,8 +31,8 @@ function StarDivider() {
 }
 
 export default function CotizadorAndres() {
-  const [link, setLink] = useState("");
   const [precioManual, setPrecioManual] = useState("");
+  const [nombreProducto, setNombreProducto] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -55,7 +55,7 @@ export default function CotizadorAndres() {
   };
 
   const cotizar = async () => {
-    if (!link.trim() && !imageFile) {
+    if (!imageFile && !nombreProducto.trim())
       setError("Por favor pega un link de Amazon/eBay o sube una imagen del producto.");
       return;
     }
@@ -66,10 +66,10 @@ export default function CotizadorAndres() {
 
     try {
      const payload = {
-      link: link.trim(),
+       nombreProducto,
        precioManual: Number(precioManual || 0),
-       };
-
+      };
+ 
       if (imageFile && imagePreview) {
         payload.imageBase64 = imagePreview.split(",")[1];
         payload.imageType = imageFile.type;
@@ -180,15 +180,14 @@ const totalUSD = +(
 
       <section className="card">
         <h1>Cotiza tu producto</h1>
+          <label>📦 Nombre del producto</label>
+          <input
+            type="text"
+            placeholder="Ej: iPhone 15 Pro Max"
+            value={nombreProducto}
+            onChange={(event) => setNombreProducto(event.target.value)}
+         />
 
-        <label>🔗 Link de Amazon o eBay</label>
-        <input
-          type="url"
-          placeholder="https://www.amazon.com/dp/..."
-          value={link}
-          onChange={(event) => setLink(event.target.value)}
-          onKeyDown={(event) => event.key === "Enter" && cotizar()}
-        />
           <label>💵 Precio del producto en USD</label>
           <input
             type="number"

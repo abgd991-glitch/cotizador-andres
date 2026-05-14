@@ -55,10 +55,10 @@ export default function CotizadorAndres() {
   };
 
   const cotizar = async () => {
-    if (!imageFile && !nombreProducto.trim())
-      setError("Por favor pega un link de Amazon/eBay o sube una imagen del producto.");
-      return;
-    }
+   if (!imageFile && !nombreProducto.trim()) {
+  setError("Por favor escribe el nombre del producto o sube una imagen.");
+  return;
+}
 
     setError("");
     setLoading(true);

@@ -32,6 +32,7 @@ function StarDivider() {
 
 export default function CotizadorAndres() {
   const [link, setLink] = useState("");
+  const [precioManual, setPrecioManual] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -64,7 +65,10 @@ export default function CotizadorAndres() {
     setResult(null);
 
     try {
-      const payload = { link: link.trim() };
+     const payload = {
+      link: link.trim(),
+       precioManual: Number(precioManual || 0),
+       };
 
       if (imageFile && imagePreview) {
         payload.imageBase64 = imagePreview.split(",")[1];
@@ -105,7 +109,7 @@ export default function CotizadorAndres() {
     const pesoVolumetrico = alto && largo && ancho ? +((alto * largo * ancho) / 5000).toFixed(3) : 0;
     const pesoFacturable = Math.max(pesoFisico, pesoVolumetrico);
 
-   const precioProducto = Number(result.precio_usd || 0);
+   const precioProducto = Number(precioManual || result.precio_usd || 0);
 const comisionCompra = +(precioProducto * 0.07).toFixed(2);
 
 const costoEnvio = +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
@@ -185,6 +189,15 @@ const totalUSD = +(
           onChange={(event) => setLink(event.target.value)}
           onKeyDown={(event) => event.key === "Enter" && cotizar()}
         />
+          <label>💵 Precio del producto en USD</label>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Ej: 129.99"
+            value={precioManual}
+            onChange={(event) => setPrecioManual(event.target.value)}
+         />
 
         <div className="or-line"><span />o también<span /></div>
 

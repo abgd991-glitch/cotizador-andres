@@ -183,7 +183,7 @@ const totalUSD = +(
           <label>📦 Nombre del producto</label>
           <input
             type="text"
-            placeholder="Ej: iPhone 15 Pro Max"
+            placeholder="Ej: Macbook Neo"
             value={nombreProducto}
             onChange={(event) => setNombreProducto(event.target.value)}
          />

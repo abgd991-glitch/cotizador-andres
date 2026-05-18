@@ -45,6 +45,7 @@ function StarDivider() {
 
 export default function CotizadorAndres() {
   const [precioManual, setPrecioManual] = useState("");
+  const [tipoTarifa, setTipoTarifa] = useState("");
   const [nombreProducto, setNombreProducto] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -130,9 +131,13 @@ const tarifaFija = TARIFAS_FIJAS.find((item) =>
   item.keywords.some((keyword) => textoProducto.includes(keyword))
 );
 
-const costoEnvio = tarifaFija
-  ? tarifaFija.precio
-  : +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
+const tarifaManual = parseFloat(tipoTarifa);
+
+const costoEnvio = !isNaN(tarifaManual)
+  ? tarifaManual
+  : tarifaFija
+    ? tarifaFija.precio
+    : +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
 
 
 const feeBateria = result.incluye_bateria ? BATTERY_FEE : 0;
@@ -209,7 +214,32 @@ const totalUSD = +(
             value={nombreProducto}
             onChange={(event) => setNombreProducto(event.target.value)}
          />
+<label>💰 Tipo de producto</label>
 
+<select
+  value={tipoTarifa}
+  onChange={(e) => setTipoTarifa(e.target.value)}
+>
+  <option value="">Calcular automáticamente</option>
+
+  <option value="70">📱 Teléfono seminuevo - $70</option>
+  <option value="85">📱 Teléfono nuevo - $85</option>
+
+  <option value="130-air">💻 MacBook Air 13 - $130</option>
+  <option value="180-pro">💻 MacBook Pro 14 - $180</option>
+
+  <option value="120-neo256">💻 MacBook Neo 256GB - $120</option>
+  <option value="130-neo512">💻 MacBook Neo 512GB - $130</option>
+
+  <option value="35">🎧 AirPods Pro - $35</option>
+  <option value="25">🎧 AirPods normales - $25</option>
+
+  <option value="50">⌚ Apple Watch - $50</option>
+
+  <option value="95">📱 Tablet/iPad - $95</option>
+
+  <option value="15">✏️ Apple Pencil - $15</option>
+</select>
           <label>💵 Precio del producto en USD</label>
           <input
             type="number"

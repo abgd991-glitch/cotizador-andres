@@ -6,6 +6,19 @@ import "./style.css";
 const SHIPPING_RATE_PER_KG = 45;
 const MASTER_BOX_KG = 0.12;
 const BATTERY_FEE = 10;
+const TARIFAS_FIJAS = [
+  { keywords: ["telefono seminuevo", "celular seminuevo", "iphone seminuevo"], precio: 70 },
+  { keywords: ["telefono nuevo", "celular nuevo", "iphone nuevo"], precio: 85 },
+  { keywords: ["macbook air 13"], precio: 130 },
+  { keywords: ["macbook pro 14"], precio: 180 },
+  { keywords: ["macbook neo 256"], precio: 120 },
+  { keywords: ["macbook neo 512"], precio: 130 },
+  { keywords: ["airpods pro"], precio: 35 },
+  { keywords: ["airpods"], precio: 25 },
+  { keywords: ["apple watch"], precio: 50 },
+  { keywords: ["tablet", "ipad"], precio: 95 },
+  { keywords: ["apple pencil"], precio: 15 },
+];
 const WHATSAPP_URL = "https://wa.me/59177829816";
 
 const categoryEmoji = {
@@ -111,8 +124,16 @@ export default function CotizadorAndres() {
 
    const precioProducto = Number(precioManual || result.precio_usd || 0);
 const comisionCompra = +(precioProducto * 0.07).toFixed(2);
+const textoProducto = `${nombreProducto} ${result.nombre || ""}`.toLowerCase();
 
-const costoEnvio = +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
+const tarifaFija = TARIFAS_FIJAS.find((item) =>
+  item.keywords.some((keyword) => textoProducto.includes(keyword))
+);
+
+const costoEnvio = tarifaFija
+  ? tarifaFija.precio
+  : +(pesoFacturable * SHIPPING_RATE_PER_KG).toFixed(2);
+
 
 const feeBateria = result.incluye_bateria ? BATTERY_FEE : 0;
 
@@ -130,6 +151,7 @@ const totalUSD = +(
       pesoVolumetrico,
       pesoFacturable,
       precioProducto,
+      tarifaFija,
       comisionCompra,
       costoEnvio,
       feeBateria,
@@ -249,7 +271,10 @@ const totalUSD = +(
           <div className="quote-box">
             <Row label="Precio del producto" value={`$${quote.precioProducto.toFixed(2)}`} />
             <Row label="Impuesto 7%" value={`$${quote.comisionCompra.toFixed(2)}`} />
-            <Row label={`Flete (${quote.pesoFacturable} kg × $45/kg)`} value={`$${quote.costoEnvio.toFixed(2)}`} />
+            <Row
+  label={quote.tarifaFija ? "Traída tarifa fija" : `Flete (${quote.pesoFacturable} kg × $45/kg)`}
+  value={`$${quote.costoEnvio.toFixed(2)}`}
+/>
             {quote.feeBateria > 0 && <Row label="Fee por batería" value={`$${quote.feeBateria.toFixed(2)}`} />}
             <div className="total-row">
               <span>TOTAL ESTIMADO</span>

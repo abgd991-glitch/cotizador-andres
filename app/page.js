@@ -7,7 +7,7 @@ const SHIPPING_RATE_PER_KG = 45;
 const MASTER_BOX_KG = 0.12;
 const BATTERY_FEE = 10;
 const TARIFAS_FIJAS = [
-  { keywords: ["telefono seminuevo", "celular seminuevo", "iphone seminuevo"], precio: 70 },
+  { keywords: ["telefono seminuevo", "celular seminuevo", "iphone seminuevo", "telefono usado", "celular usado", "iphone usado", "renovado", "renewed", "refurbished"], precio: 70 },
   { keywords: ["telefono nuevo", "celular nuevo", "iphone nuevo"], precio: 85 },
   { keywords: ["macbook air 13"], precio: 130 },
   { keywords: ["macbook pro 14"], precio: 180 },
